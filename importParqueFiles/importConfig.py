@@ -1,0 +1,1 @@
+GRAPHRAG_FOLDER="C:/Users/a-reevewu/Desktop/project/graphrag-cosmosdb-AI-search-intergration/data/output"

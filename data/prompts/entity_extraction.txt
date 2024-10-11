@@ -1,0 +1,84 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity, first identify all entities needed from the text in order to capture the information and ideas in the text.
+Next, report all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: Suggest several labels or categories for the entity. The categories should not be specific, but should be as general as possible.
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: a numeric score indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in The primary language of the provided text is English. as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into The primary language of the provided text is English., just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+text:
+ -network and out -of-network, as well as mental health and 
+substance abuse coverage. Northwind Standard does not offer coverage for emergency services, mental 
+health and substance abuse coverage, or out -of-network services. 
+Both plans offer coverage for pre scription drugs. Northwind Health Plus offers a wider range of 
+prescription drug coverage than Northwind Standard. Northwind Health Plus covers generic, brand -
+name, and specialty drugs, while Northwind Standard only covers generic and brand -name drugs. 
+Both plans offer coverage for vision and dental services. Northwind Health Plus offers coverage for vision 
+exams, glasses, and contact lenses, as well as dental exams, cleanings, and fillings. Northwind Standard 
+only offers coverage for vision exams and glas ses. 
+Both plans offer coverage for medical services. Northwind Health Plus offers coverage for hospital stays, 
+doctor visits, lab tests, and X -rays. Northwind Standard only offers coverage for doctor
+------------------------
+output:
+("entity"{tuple_delimiter}NORTHWIND STANDARD{tuple_delimiter}INSURANCE PLAN{tuple_delimiter}Northwind Standard is a health insurance plan that does not cover emergency services, mental health, substance abuse, or out-of-network services. It covers generic and brand-name prescription drugs, vision exams, and glasses, as well as doctor visits{record_delimiter}
+("entity"{tuple_delimiter}NORTHWIND HEALTH PLUS{tuple_delimiter}INSURANCE PLAN{tuple_delimiter}Northwind Health Plus is a comprehensive health insurance plan covering a wide range of services including emergency services, mental health, substance abuse, out-of-network services, generic, brand-name, and specialty drugs, vision exams, glasses, contact lenses, dental exams, cleanings, fillings, hospital stays, doctor visits, lab tests, and X-rays{record_delimiter}
+("relationship"{tuple_delimiter}NORTHWIND STANDARD{tuple_delimiter}NORTHWIND HEALTH PLUS{tuple_delimiter}Both are health insurance plans offered by the same provider, with Northwind Health Plus offering more comprehensive coverage{tuple_delimiter}8{completion_delimiter}
+#############################
+
+
+Example 2:
+
+text:
+Contoso Electronics 
+Plan and Benefit Packages
+This document contains information generated using a language model (Azure OpenAI). The information 
+contained in this document is only for demonstration purposes and does not reflect the opinions or 
+beliefs of Microsoft. Microsoft makes no representations or warranties of any kind, express or implied, 
+about the completeness, accuracy, reliability, suitability or availability with respect to the information 
+contained in this document. 
+All rights reserved to MicrosoftWelcome to Contoso  Electronics ! We are excited to offer our employees two comprehensive health 
+insurance plans through Northwind Health. 
+Northwind Health Plus  
+Northwind Health Plus is a comprehensive plan that provides comprehensive coverage for medical, 
+vision, and dental services. T his plan also offers prescription drug coverage, mental health and substance 
+abuse coverage, and coverage for preventive care services. With Northwind Health Plus, you can choose 
+from a variety of in -network providers, including primary care physicians, sp ecialists, hospitals,
+------------------------
+output:
+("entity"{tuple_delimiter}CONTOSO ELECTRONICS{tuple_delimiter}ORGANIZATION{tuple_delimiter}Contoso Electronics is a company offering health insurance plans to its employees{record_delimiter}
+("entity"{tuple_delimiter}NORTHWIND HEALTH{tuple_delimiter}ORGANIZATION{tuple_delimiter}Northwind Health is an insurance provider offering comprehensive health plans{record_delimiter}
+("entity"{tuple_delimiter}NORTHWIND HEALTH PLUS{tuple_delimiter}INSURANCE PLAN{tuple_delimiter}Northwind Health Plus is a comprehensive health insurance plan covering medical, vision, dental, prescription drugs, mental health, substance abuse, and preventive care{record_delimiter}
+("relationship"{tuple_delimiter}CONTOSO ELECTRONICS{tuple_delimiter}NORTHWIND HEALTH{tuple_delimiter}Contoso Electronics offers health insurance plans through Northwind Health{tuple_delimiter}8{record_delimiter}
+("relationship"{tuple_delimiter}NORTHWIND HEALTH{tuple_delimiter}NORTHWIND HEALTH PLUS{tuple_delimiter}Northwind Health Plus is a health insurance plan provided by Northwind Health{tuple_delimiter}9{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+text: {input_text}
+######################
+output:
